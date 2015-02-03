@@ -1,0 +1,231 @@
+C51 COMPILER V9.01   MANDINGAS                                                             01/29/2015 11:33:23 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MANDINGAS
+OBJECT MODULE PLACED IN mandingas.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE mandingas.c OMF2 BROWSE DEBUG
+
+line level    source
+
+   1          
+   2          
+   3          #include<mandingas.h>
+   4          
+   5          int temporizador = 0;
+   6          
+   7          
+   8          //      #####################################################################
+   9          //      ############################## Funções ##############################
+  10          //      #####################################################################
+  11          
+  12          
+  13          //  #####################################################################
+  14          //      ################ Rotinas de função para o display ###################
+  15          //  #####################################################################
+  16          
+  17          //      ############## Rotinas de inicialização do display ##################
+  18          
+  19          void configura_Display(){
+  20   1              FUNCDIS (56);
+  21   1              FUNCDIS (56);
+  22   1              FUNCDIS (6);
+  23   1              FUNCDIS (12);
+  24   1              FUNCDIS (1);
+  25   1              FUNCDIS (128);  
+  26   1      }
+  27          
+  28          
+  29          
+  30          
+  31          
+  32          //      ############ Rotina para enviar caracter para o display ################
+  33          
+  34          void ImpDis(char a[20], int b){
+  35   1      
+  36   1      int i;
+  37   1      for (i = b; i<20; i++){
+  38   2      
+  39   2      
+  40   2              P1 = a[i];
+  41   2              DadoDis();
+  42   2              DEL40uS();
+  43   2      }
+  44   1      }
+  45          
+  46          void DadoDis(){                                                                                                                                                         // Função para enviar dados ao display
+  47   1                              P3_0 = 1;                                                                                                                                                               // Configura display para receber dados
+  48   1                              P3_1 = 1;                                                                                                                                                               // Habilita a leitura de instruções/dados
+  49   1                              DEL40uS();                                                                                                                                                      // Delay necessário para o display
+  50   1                              P3_1 = 0;
+  51   1      }
+  52          
+  53          
+  54          //      ########### Rotina para selecionar a linha do display ###############
+  55          
+C51 COMPILER V9.01   MANDINGAS                                                             01/29/2015 11:33:23 PAGE 2   
+
+  56          void SelLinha(int linha){                                                                                                                       // Bloco para selecionar a linha a ser escriata no diaplay
+  57   1                      int l;  
+  58   1              switch(linha){
+  59   2                      case 1:
+  60   2                                                      l = 128; break;                                                                                                         // Nesse caso linha 1 "80h"
+  61   2                      case 2:
+  62   2                                                      l = 192; break;                                                                                                         // Nesse caso linha 2 "0c0h"
+  63   2                      case 3:
+  64   2                                                      l = 148; break;                                                                                                         // Nesse caso linha 3 "94h"
+  65   2                      case 4: 
+  66   2                                                      l = 212; break;                                                                                                         // Nesse caso linha 4 "0d4h"
+  67   2                      } 
+  68   1      FUNCDIS(l);                                                                                                                                                                             // Envia a linha selecionada para o display
+  69   1              }
+  70          
+  71          
+  72          //      ############ Rotina para enviar função para o display ################
+  73          
+  74          
+  75          void FUNCDIS (int func){                                                                                                                        // Bloco de função proriamente dito
+  76   1                              P3_0 = 0;                                                                                                                                                               // Configura display para receber instruções
+  77   1                              P3_1 = 1;                                                                                                                                                               // Habilita a leitura de instruções/dados
+  78   1                              P1 = func;                                                                                                                                                      // Coloca o dado na porta de leitura/escrita do display
+  79   1                              DEL3mS();                                                                                                                                                               // Rotina de delay para 3ms
+  80   1                              P3_1 = 0;                                                                                                                                                               // Desabilita leitura de instruções/dados       
+  81   1                      }
+  82          
+  83          //  #####################################################################
+  84          //      ######################## Rotinas de delay ###########################
+  85          //  #####################################################################
+  86          
+  87          void DELSEG(){                                                                                                                                                                  // Função para delay de 1 segundo
+  88   1        TMOD = 2;                                                                                                                                                                                     // Configura Timer/Counter no modo 2 (dois Timers com recarga automática
+             -)
+  89   1        TL0 = 55;                                                                                                                                                                                     // Valor inicial da contagem
+  90   1        TH0 = 55;                                                                                                                                                                                     // Valor de recarga automática
+  91   1        PT0 = 1;                                                                                                                                                                                      // Define prioridade para Timer 0
+  92   1        EA  = 1;                                                                                                                                                                                      // Ativa todas as interrupções
+  93   1        ET0 = 1;                                                                                                                                                                                      // Ativa interrupção interna do Timer 0
+  94   1        TR0 = 1;                                                                                                                                                                                      // Dispara contagem
+  95   1              temporizador = 0;                                                                                                                                                       // Varíáve do contador secundario (complementar) decontagem
+  96   1       while(temporizador <5000){}                                                                                                                    // Laço até que tempo seja o tempo seja concluido
+  97   1              TR0 = 0;                                                                                                                                                                                        // Pausa a contagem     
+  98   1      }
+  99          
+ 100                  
+ 101          void DEL02SEG(){                                                                                                                                                        // Função para delay de 200 milisegundos
+ 102   1        TMOD = 2;                                                                                                                                                                                     // Configura Timer/Counter no modo 2 (dois Timers com recarga automática
+             -)
+ 103   1        TL0 = 55;                                                                                                                                                                                     // Valor inicial da contagem
+ 104   1        TH0 = 55;                                                                                                                                                                                     // Valor de recarga automática
+ 105   1        PT0 = 1;                                                                                                                                                                                      // Define prioridade para Timer 0
+ 106   1        EA  = 1;                                                                                                                                                                                      // Ativa todas as interrupções
+ 107   1        ET0 = 1;                                                                                                                                                                                      // Ativa interrupção interna do Timer 0
+ 108   1        TR0 = 1;                                                                                                                                                                                      // Dispara contagem
+ 109   1              temporizador = 0;                                                                                                                                                       // Varíáve do contador secundario (complementar) decontagem
+ 110   1       while(temporizador <1000){}                                                                                                                    // Laço até que tempo seja o tempo seja concluido
+ 111   1              TR0 = 0;                                                                                                                                                                                        // Pausa a contagem     
+ 112   1      }
+ 113          
+ 114          
+ 115          
+C51 COMPILER V9.01   MANDINGAS                                                             01/29/2015 11:33:23 PAGE 3   
+
+ 116          void DEL01SEG(){                                                                                                                                                        // Função para delay de 500 milisegundos
+ 117   1        TMOD = 2;                                                                                                                                                                                     // Configura Timer/Counter no modo 2 (dois Timers com recarga automática
+             -)
+ 118   1        TL0 = 55;                                                                                                                                                                                     // Valor inicial da contagem
+ 119   1        TH0 = 55;                                                                                                                                                                                     // Valor de recarga automática
+ 120   1        PT0 = 1;                                                                                                                                                                                      // Define prioridade para Timer 0
+ 121   1        EA  = 1;                                                                                                                                                                                      // Ativa todas as interrupções
+ 122   1        ET0 = 1;                                                                                                                                                                                      // Ativa interrupção interna do Timer 0
+ 123   1        TR0 = 1;                                                                                                                                                                                      // Dispara contagem
+ 124   1              temporizador = 0;                                                                                                                                                       // Varíáve do contador secundario (complementar) decontagem
+ 125   1       while(temporizador <500){}                                                                                                                     // Laço até que tempo seja o tempo seja concluido
+ 126   1              TR0 = 0;                                                                                                                                                                                        // Pausa a contagem     
+ 127   1      }
+ 128          
+ 129                  
+ 130          
+ 131          void DEL3mS(){                                                                                                                                                                  // Bloco de delay de 3 milisegundos
+ 132   1        TMOD = 2;                                                                                                                                                                                     // Configura Timer/Counter no modo 2 (dois Timers com recarga automática
+             -)
+ 133   1        TL0 = 55;                                                                                                                                                                                     // Valor inicial da contagem
+ 134   1        TH0 = 55;                                                                                                                                                                                     // Valor de recarga automática
+ 135   1        PT0 = 1;                                                                                                                                                                                      // Define prioridade para Timer 0
+ 136   1        EA  = 1;                                                                                                                                                                                      // Ativa todas as interrupções
+ 137   1        ET0 = 1;                                                                                                                                                                                      // Ativa interrupção interna do Timer 0
+ 138   1        TR0 = 1;                                                                                                                                                                                      // Dispara contagem
+ 139   1              temporizador = 0;                                                                                                                                                       // Varíáve do contador secundario (complementar) decontagem
+ 140   1       while(temporizador <33){}                                                                                                                      // Laço até que tempo seja o tempo seja concluido
+ 141   1              TR0 = 0;                                                                                                                                                                                        // Pausa a contagem
+ 142   1      
+ 143   1      }
+ 144          
+ 145          
+ 146          void DEL40uS(){                                                                                                                                                                 // Bloco de delay de 40 microsegundos
+ 147   1        TMOD = 2;                                                                                                                                                                                     // Configura Timer/Counter no modo 2 (dois Timers com recarga automática
+             -)
+ 148   1        TL0 = 216;                                                                                                                                                                            // Valor inicial da contagem
+ 149   1        TH0 = 216;                                                                                                                                                                            // Valor de recarga automática
+ 150   1        PT0 = 1;                                                                                                                                                                                      // Define prioridade para Timer 0
+ 151   1        EA  = 1;                                                                                                                                                                                      // Ativa todas as interrupções
+ 152   1        ET0 = 1;                                                                                                                                                                                      // Ativa interrupção interna do Timer 0
+ 153   1        TR0 = 1;                                                                                                                                                                                      // Dispara contagem
+ 154   1              temporizador = 0;                                                                                                                                                       // Varíáve do contador secundario (complementar) decontagem
+ 155   1       while(temporizador <2){}                                                                                                                               // Laço até que tempo seja o tempo seja concluido
+ 156   1              TR0 = 0;                                                                                                                                                                                        // Pausa a contagem
+ 157   1      }
+ 158          
+ 159          
+ 160          //  #####################################################################       
+ 161          //      ###################### Chamadas de Interrupção ######################   
+ 162          //  #####################################################################       
+ 163          
+ 164          //      ############ Rotina chamada pela interrupção externa 0 ##############
+ 165          void Atendimento_Interrupcao_Ex0() interrupt 0
+ 166          {
+ 167   1      return;
+ 168   1      }
+ 169          
+ 170          //      ############ Rotina chamada pela interrupção do Timer 0 #############
+ 171          void Atendimento_interrupcao_Timer0() interrupt 1
+ 172          {
+ 173   1              temporizador ++;
+ 174   1      }
+C51 COMPILER V9.01   MANDINGAS                                                             01/29/2015 11:33:23 PAGE 4   
+
+ 175          
+ 176          //      ############ Rotina chamada pela interrupção externa 1 ##############
+ 177          void Atendimento_Interrupcao_Ex1() interrupt 2
+ 178          {
+ 179   1      return;
+ 180   1      }
+ 181          
+ 182          //      ############ Rotina chamada pela interrupção do Timer 1 #############
+ 183          void Atendimento_interrupcao_Timer1() interrupt 3
+ 184          {
+ 185   1      return;
+ 186   1      }
+ 187          
+ 188          
+ 189          //      ########## Rotina chamada pela interrupção do canal Serial ###########
+ 190          void Atendimento_interrupcao_Serial() interrupt 4
+ 191          {
+ 192   1      return;
+ 193   1      }       
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    398    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

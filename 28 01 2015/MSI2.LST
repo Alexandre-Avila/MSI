@@ -1,0 +1,70 @@
+C51 COMPILER V9.01   MSI2                                                                  01/29/2015 12:42:20 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MSI2
+OBJECT MODULE PLACED IN MSI2.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE MSI2.c OMF2 BROWSE DEBUG
+
+line level    source
+
+   1           
+   2           // ********************* Reescrevendo o progrma MSI em C ******************
+   3          
+   4          
+   5          
+   6          #include<mandingas.h>
+   7          
+   8          
+   9          
+  10          
+  11          
+  12          void main (){
+  13   1      
+  14   1              
+  15   1      while ( 1 ){
+  16   2      
+  17   2      
+  18   2              configura_Display();
+  19   2              
+  20   2              
+  21   2              SelLinha(1);                                                                                                                                                                    // Função para selecionar a linha a ser escrita no display      
+  22   2              ImpDis("Teste de display    ", 0);                                                                              // Função de envio de linha + posição inicial da linha
+  23   2              SelLinha(2);
+  24   2              ImpDis("Agora escrito em C  ", 0);
+  25   2              DELSEG();
+  26   2              SelLinha(3);
+  27   2              ImpDis("Fumeta pra caralho  ", 0);
+  28   2              DELSEG();
+  29   2              DELSEG();
+  30   2              SelLinha(4);
+  31   2              ImpDis("Demorou, mas saiu...", 0);
+  32   2              LerAD();
+*** WARNING C206 IN LINE 32 OF MSI2.C: 'LerAD': missing function-prototype
+  33   2              
+  34   2              while (1){}
+  35   2              
+  36   2      
+  37   2      
+  38   2      }
+  39   1      }
+  40          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     93    ----
+   CONSTANT SIZE    =     84    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+C51 COMPILER V9.01   MSI2                                                                  01/29/2015 12:42:20 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

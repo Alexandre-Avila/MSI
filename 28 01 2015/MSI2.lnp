@@ -1,0 +1,7 @@
+"MSI2.obj",
+"mandingas.obj",
+"LerAD.obj" 
+TO "MSI2" 
+
+CLASSES (CODE (C:0x0-C:0x1FFF), CONST (C:0x0-C:0x1FFF), 
+ECODE (C:0x0-C:0x1FFF), HCONST (C:0x0-C:0x1FFF)) 

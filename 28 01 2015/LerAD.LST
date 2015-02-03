@@ -1,0 +1,105 @@
+C51 COMPILER V9.01   LERAD                                                                 01/29/2015 12:47:56 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE LERAD
+OBJECT MODULE PLACED IN LerAD.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE LerAD.c OMF2 BROWSE DEBUG
+
+line level    source
+
+   1          
+   2          // ################# Biblioteca de funções de leitura do conversor A/D
+   3          
+   4          #include<LerAD.h>
+   5          #include<AT89X52.H>
+   6          
+   7          // ################### P2 =     barramento de dados do AD ######################
+   8          
+   9          // ################ P0 =        barramento de controle do AD ###################
+  10          // P0 =         barramento de controle AD
+  11          // P0_0         Pino 1 de seleção de porta do AD
+  12          // P0_1         Pino 2 de seleção de porta do AD
+  13          // P0_2         Pino 3 de seleção de porta do AD
+  14          // P0_3         ativa ALE
+  15          // P0_4         Start do AD     
+  16          // P0_5         EOC sinaliza o fim da conversão(End of conversion)
+  17          // P0_6         OE coloca o dado no barramento (out put enable)
+  18          
+  19          
+  20          void LerAD(){
+  21   1              incAD();
+  22   1              LerADx(1);
+  23   1              }
+  24          void IncAD(){
+  25   1              P0_3 = 0;                                                                                                       // Desativa ALE
+  26   1              P0_4 = 0;                                                                                               // Desativa Start
+  27   1              P0_6 = 0;                                                                                                       // Desativa OE (coloca barramento em tree state)
+  28   1              }                                                                                                                       
+  29          
+  30          void LerADx(int ad){
+  31   1      
+  32   1              switch(ad){                                                                                                     // Seleciona AD
+  33   2                      case 1:
+  34   2                                      ad = 1; P0_0 = 0;
+  35   2                                                      P0_1 = 0;
+  36   2                                                      P0_2 = 0; break;                                                // Seleciona AD 1                                                                                       
+  37   2                      case 2:
+  38   2                                      ad = 2; P0_0 = 1;
+  39   2                                                      P0_1 = 0;
+  40   2                                                      P0_2 = 0; break;                                                // Seleciona AD 2                                       
+  41   2                      case 3:                                                                                         
+  42   2                                      ad = 3; P0_0 = 0;
+  43   2                                                      P0_1 = 1;
+  44   2                                                      P0_2 = 0; break;                                                // Seleciona AD 3                                       
+  45   2                      case 4: 
+  46   2                                      ad = 4; P0_0 = 1;
+  47   2                                                      P0_1 = 1;
+  48   2                                                      P0_2 = 0; break;                                                // Seleciona AD 4
+  49   2                      case 5:
+  50   2                                      ad = 5; P0_0 = 0;
+  51   2                                                      P0_1 = 0;
+  52   2                                                      P0_2 = 1; break;                                                // Seleciona AD 5
+  53   2                      case 6:
+  54   2                                      ad = 6; P0_0 = 1;
+  55   2                                                      P0_1 = 0;
+C51 COMPILER V9.01   LERAD                                                                 01/29/2015 12:47:56 PAGE 2   
+
+  56   2                                                      P0_2 = 1; break;                                                // Seleciona AD 6
+  57   2                      case 7:
+  58   2                                      ad = 7; P0_0 = 0;
+  59   2                                                      P0_1 = 1;
+  60   2                                                      P0_2 = 1; break;                                                // Seleciona AD 7
+  61   2                      case 8:
+  62   2                                      ad = 8; P0_0 = 1;
+  63   2                                                      P0_1 = 1;
+  64   2                                                      P0_2 = 1; break;                                                // Seleciona AD 8
+  65   2                      } 
+  66   1      
+  67   1                 P0_4 = 1;                                                                                            // Ativa Start
+  68   1                 P0_4 = 0;                                                                                            // Desativa Start
+  69   1                 while (P0_5 = 0){}                                                                           // Monitora EOC
+*** WARNING C276 IN LINE 69 OF LERAD.C: constant in condition expression
+  70   1                 P0_6 = 1;                                                                                            // Ativa OE (coloca dado no barramento)
+  71   1                 P0_6 = 0;                                                                                            // Desativa OE (coloca barramento em tree state)
+  72   1      
+  73   1              }
+  74           
+  75                                                                                             
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    123    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
